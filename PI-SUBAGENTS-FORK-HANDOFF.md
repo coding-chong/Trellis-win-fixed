@@ -21,6 +21,8 @@ $release = '30c3d80fea66f5ca7edc3b049c613dcf70902afd'
 $parent = 'da241032ec1295158048be85948d6ce12bdc9ffd'
 $telemetry = '060fbdae5e7751641e5b55a7ecbf8b46c314c516'
 
+$actualOrigin = (git -C $trellis remote get-url origin).Trim()
+if ($actualOrigin -ne 'https://github.com/coding-chong/Trellis-win-fixed.git') { throw "Unexpected fork remote: $actualOrigin" }
 if (git -C $trellis status --short) { throw 'Trellis checkout is not clean.' }
 $actual = (git -C $trellis rev-parse HEAD).Trim()
 git -C $trellis merge-base --is-ancestor $release $actual
