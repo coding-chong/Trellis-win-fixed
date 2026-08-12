@@ -6,7 +6,7 @@ This branch contains the locally validated Trellis Pi-subagents delivery and is 
 
 - Fork: `https://github.com/coding-chong/Trellis-win-fixed.git`
 - Branch: `feat/pi-subagents-backend`
-- Release commit: `060fbdae5e7751641e5b55a7ecbf8b46c314c516`
+- Release commit: `30c3d80fea66f5ca7edc3b049c613dcf70902afd` (documentation handoff commit; contains `060fbdae5e7751641e5b55a7ecbf8b46c314c516` and `da241032ec1295158048be85948d6ce12bdc9ffd`)
 - Required migration ancestor: `da241032ec1295158048be85948d6ce12bdc9ffd`
 
 A branch name is not sufficient provenance. Before touching a target project, clone the fork and verify the exact release commit:
@@ -17,15 +17,16 @@ git clone --branch feat/pi-subagents-backend --single-branch `
   <TRELLIS_CHECKOUT>
 
 $trellis = (Resolve-Path <TRELLIS_CHECKOUT>).Path
-$expected = '060fbdae5e7751641e5b55a7ecbf8b46c314c516'
+$expected = '30c3d80fea66f5ca7edc3b049c613dcf70902afd'
 $parent = 'da241032ec1295158048be85948d6ce12bdc9ffd'
+$telemetry = '060fbdae5e7751641e5b55a7ecbf8b46c314c516'
 
 if (git -C $trellis status --short) { throw 'Trellis checkout is not clean.' }
 $actual = (git -C $trellis rev-parse HEAD).Trim()
 if ($actual -ne $expected) { throw "Unexpected Trellis release: $actual" }
 git -C $trellis merge-base --is-ancestor $parent $actual
 if ($LASTEXITCODE -ne 0) { throw 'Required migration commit is absent.' }
-git -C $trellis merge-base --is-ancestor $expected $actual
+git -C $trellis merge-base --is-ancestor $telemetry $actual
 if ($LASTEXITCODE -ne 0) { throw 'Required telemetry release commit is absent.' }
 ```
 
