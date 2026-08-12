@@ -6,18 +6,20 @@ This branch contains the locally validated Trellis Pi-subagents delivery and is 
 
 - Fork: `https://github.com/coding-chong/Trellis-win-fixed.git`
 - Branch: `feat/pi-subagents-backend`
-- Release baseline: `b94d8a45969b0d84b151bf0e9e2842e3cfa371db` (published fork handoff baseline; contains `30c3d80fea66f5ca7edc3b049c613dcf70902afd`, `060fbdae5e7751641e5b55a7ecbf8b46c314c516`, and `da241032ec1295158048be85948d6ce12bdc9ffd`). A verifier must compare `HEAD` to one explicitly recorded immutable `expectedHead`; the baseline is used only when no later handoff release SHA has been independently recorded.
+- Certified handoff release: `1625a77062e1797fb4a63bb594c320f92c5e7bde` (the immutable first-use certification handoff release; contains `b94d8a45969b0d84b151bf0e9e2842e3cfa371db`, `30c3d80fea66f5ca7edc3b049c613dcf70902afd`, `060fbdae5e7751641e5b55a7ecbf8b46c314c516`, and `da241032ec1295158048be85948d6ce12bdc9ffd`). A verifier must checkout this exact release before injection unless a later separately published release record supplies another immutable expected SHA.
 - Required migration ancestor: `da241032ec1295158048be85948d6ce12bdc9ffd`
 
-A branch name is not sufficient provenance. Before touching a target project, clone the fork and verify one exact immutable `expectedHead`. For the baseline handoff below, use `b94d8a45969b0d84b151bf0e9e2842e3cfa371db`. When a later handoff release is published, obtain its SHA from the separate release record, assign it to `$expectedHead`, and require exact equality; do not accept an arbitrary descendant merely because it contains this baseline.
+A branch name is not sufficient provenance. Before touching a target project, clone the fork, checkout the certified release SHA, and verify exact equality. For this handoff use `1625a77062e1797fb4a63bb594c320f92c5e7bde`. A later branch head does not replace this release: it requires a separate published release record that gives a new immutable `expectedHead`.
 
 ```powershell
 git clone --branch feat/pi-subagents-backend --single-branch `
   https://github.com/coding-chong/Trellis-win-fixed.git `
   <TRELLIS_CHECKOUT>
 
+git checkout --detach 1625a77062e1797fb4a63bb594c320f92c5e7bde
+
 $trellis = (Resolve-Path <TRELLIS_CHECKOUT>).Path
-$expectedHead = 'b94d8a45969b0d84b151bf0e9e2842e3cfa371db' # Replace only with a separately recorded immutable later release SHA.
+$expectedHead = '1625a77062e1797fb4a63bb594c320f92c5e7bde' # Replace only with a separately published immutable later release SHA.
 $parent = 'da241032ec1295158048be85948d6ce12bdc9ffd'
 $telemetry = '060fbdae5e7751641e5b55a7ecbf8b46c314c516'
 $actualOrigin = (git -C $trellis remote get-url origin).Trim()
